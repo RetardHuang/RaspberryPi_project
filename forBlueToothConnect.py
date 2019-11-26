@@ -1,7 +1,7 @@
 import bluetooth
 
 class pourBluz:
-    bd_addr = "98:D3:21:FC:82:A8"  # arduino连接的蓝牙模块的地址
+    bd_addr = "98:D3:21:FC:82:A8"
     port = 1
     bytesflag = bytes('\r\n',encoding='utf-8')
     def __init__(self):
@@ -14,7 +14,7 @@ class pourBluz:
         self.bytesflag=bytes(NewFlag,encoding='utf-8')
     def connect(self):
         self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        self.sock.connect((self.bd_addr, self.port))  # 创建连接
+        self.sock.connect((self.bd_addr, self.port))
     def receive(self):
         receivedData=bytes()
         while True:
@@ -28,7 +28,7 @@ class pourBluz:
     def received_string(self):
         return str(self.receive(),'utf-8')
     def close(self):
-        self.sock.close()  # 关闭连接
+        self.sock.close()
 
 
 if __name__=='__main__':
@@ -39,4 +39,4 @@ if __name__=='__main__':
             try:
                 print(Jazz.received_string())
             except:
-                break#若连接不上则重新连接
+                break
