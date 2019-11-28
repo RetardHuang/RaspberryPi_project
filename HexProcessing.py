@@ -49,16 +49,14 @@ class BlueZHexUnit:
                     self.FullHexList.append(self.HexList)
                     self.FullValueList.append(self.ValueList)
                 self.ucRxCnt =0
-    def extendASingleUnit(self):
-        pass
-        #self.HexList.extend(self.intermezzo[LowNumber:HighNumber])
-    def isFull(self):
-        return len(self.HexList) >= 44
-    def clear(self):
-        self.HexList=list()
-    def HexToValue(self):
-
-        pass
+    def TruOut(self):
+        print(len(self.FullValueList))
+        return self.FullValueList[0:149]
+    def allclear(self):
+        self.HexList=list(['']*4)
+        self.ValueList=list(['']*4)
+        self.FullValueList=list()
+        self.FullHexList=list()
 
 
 if __name__=='__main__':
