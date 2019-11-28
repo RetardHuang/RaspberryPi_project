@@ -1,7 +1,6 @@
 from HexProcessing import BlueZHexUnit
 from forBlueToothConnect import pourBluz
 import time
-#scheinter=BackgroundScheduler()
 Data=BlueZHexUnit()
 Bluemodule=pourBluz()
 
