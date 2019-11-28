@@ -15,7 +15,26 @@ class pourBluz:
     def connect(self):
         self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         self.sock.connect((self.bd_addr, self.port))
-    def receive(self):
+    def naivesReceiveString(self):
+        return self.sock.recv(1024).decode('utf-8','ignore')
+    def naivesReceive(self):
+        return self.sock.recv(1024)
+    def naivesReceiveHex(self):
+        return self.sock.recv(1024).hex()#The type of return value is STR
+    def Hex55kai(self):
+        count=0
+        receivedHex=''
+        while True:
+            aLine=self.naivesReceiveHex()
+            if aLine == '55':
+                print(receivedHex)
+                print(count)
+                count+=1
+                #print(len(receivedHex))
+                receivedHex=aLine
+            else:
+                receivedHex=receivedHex+aLine
+    def receive_ArduinoTest(self):
         receivedData=bytes()
         while True:
             naivedata=self.sock.recv(1024)#contains\r\n at last
@@ -33,10 +52,6 @@ class pourBluz:
 
 if __name__=='__main__':
     Jazz=pourBluz()
+    Jazz.connect()
     while True:
-        Jazz.connect()
-        while True:
-            try:
-                print(Jazz.received_string())
-            except:
-                break
+        print(Jazz.naivesReceiveHex())
