@@ -49,7 +49,7 @@ class BlueZHexUnit:
                     self.FullHexList.append(self.HexList)
                     self.FullValueList.append(self.ValueList)
                 self.ucRxCnt =0
-    def TruOut(self):
+    def TruOut(self):#This step can get 150 set of data.
         print(len(self.FullValueList))
         return self.FullValueList[0:149]
     def allclear(self):
