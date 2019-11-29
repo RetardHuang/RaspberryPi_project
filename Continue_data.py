@@ -3,6 +3,7 @@ from HexProcessing import BlueZHexUnit
 from forBlueToothConnect import pourBluz
 import time
 import threading
+global Data, Bluemodule
 class BHRecog(BlueZHexUnit,threading.Thread):
     def __init__(self):
         BlueZHexUnit.__init__(self)
@@ -19,6 +20,7 @@ class BHRecog(BlueZHexUnit,threading.Thread):
         del self.FullValueList[0:-self.windowLength]
     ######################################
     def recognize(self):#DetectwindowData!
+        print('Recog!')
         pass
     ######################################
     def interval(self):#What need to do after reveicing 3-second Data
@@ -35,17 +37,17 @@ class BHRecog(BlueZHexUnit,threading.Thread):
                     else:
                         time.sleep(0.0001)
             self.windowFowards()
-    def lopcoupData(self,ReceivedHexString):#To get the data, which need to be assgined into another thread
+    def lopcoupData(self):#To get the data, which need to be assgined into another thread
+        global Bluemodule
         while True:
-            BlueZHexUnit.coupData(self,ReceivedHexString)
+            self.coupData(Bluemodule.naivesReceiveHex())
+            print('Rec!')
             self.windowFlag=True
 
 if __name__=='__main__':
-
-    global Data, Bluemodule
     Data= BHRecog()
     Bluemodule=pourBluz()
-    Read = threading.Thread(target=Data.lopcoupData,args=(Bluemodule.naivesReceiveHex()), name='ReadTheData')
+    Read = threading.Thread(target=Data.lopcoupData, name='ReadTheData')
     Clim = threading.Thread(target=Data.lopClimb, name='ClimbTheData')
     Bluemodule.connect()#Connect to bluetooth module
     Data.setWindowLength(150)
