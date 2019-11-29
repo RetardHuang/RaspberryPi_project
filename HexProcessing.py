@@ -1,18 +1,20 @@
 import forBlueToothConnect as BTC
 import re
 class BlueZHexUnit:
+    pattern = re.compile('.{2}')
+    HexList=list(['']*4)
+    ValueList=list(['']*4)
+    ucRxBuffer=list(['']*100)
+    FullHexList=list()
+    FullValueList=list()
     def __init__(self):
-        self.HexList=list(['']*4)
-        self.ValueList=list(['']*4)
-        self.ucRxBuffer=list(['']*100)
         self.ucRxCnt = 0  # 0 at initial
-        self.FullHexList=list()
-        self.FullValueList=list()
-    def split(self,ReceivedHexString):
-        pattern = re.compile('.{2}')
-        self.HexPairs=pattern.findall(ReceivedHexString)#This two is use to split with interval two
-    def coupData(self):
-        for aPair in self.HexPairs:
+        self.windowLength=150
+    def setWindowLength(self,WindowLength):
+        self.windowLength=WindowLength
+    def coupData(self,ReceivedHexString):
+        HexPairs=self.pattern.findall(ReceivedHexString)#This two is use to split with interval two
+        for aPair in HexPairs:
             self.ucRxBuffer[self.ucRxCnt] = aPair
             self.ucRxCnt += 1  # 0 at initial
             if self.ucRxBuffer[0]!='55':
@@ -49,9 +51,10 @@ class BlueZHexUnit:
                     self.FullHexList.append(self.HexList)
                     self.FullValueList.append(self.ValueList)
                 self.ucRxCnt =0
+        self.windowFlag=True
     def TruOut(self):#This step can get 150 set of data.
         print(len(self.FullValueList))
-        return self.FullValueList[0:149]
+        return self.FullValueList[0:self.windowLength]
     def allclear(self):
         self.HexList=list(['']*4)
         self.ValueList=list(['']*4)
