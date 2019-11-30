@@ -53,7 +53,7 @@ class BlueZHexUnit:
                 self.ucRxCnt =0
         self.windowFlag=True
     def TruOut(self):#This step can get 150 set of data.
-        print(len(self.FullValueList))
+        print('Having received',len(self.FullValueList),'sets of value.')
         return self.FullValueList[0:self.windowLength]
     def allclear(self):
         self.HexList=list(['']*4)

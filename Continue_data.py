@@ -3,13 +3,23 @@ from HexProcessing import BlueZHexUnit
 from forBlueToothConnect import pourBluz
 import time
 import threading
+
+from Process import Calculate
+import numpy as np
+#from scipy.fftpack import fft,ifft
+
 global Data, Bluemodule
-class BHRecog(BlueZHexUnit,threading.Thread):
-    def __init__(self):
+class BHRecog(BlueZHexUnit,Calculate):
+    def __init__(self):#Init Step must contain the length of window
         BlueZHexUnit.__init__(self)
+        Calculate.__init__(self,self.windowLength)
         self.leftedge=0
         self.stepLength=1
         self.windowFlag=False
+    def setWindowLength(self,WindowLength):
+        BlueZHexUnit.setWindowLength(self,WindowLength)
+        self.FullFeature=np.empty([self.windowLength,self.featurenumber])
+
     def windowFowards(self):
         self.leftedge+=self.stepLength
     def windowData(self):
@@ -21,13 +31,14 @@ class BHRecog(BlueZHexUnit,threading.Thread):
     ######################################
     def recognize(self):#DetectwindowData!
         print('Recog!')
+        self.proAWin(self.windowData())
         pass
     ######################################
     def interval(self):#What need to do after reveicing 3-second Data
         print(self.TruOut())
     def lopClimb(self):#To Reconize the action
         while True:
-            self.recognize()
+            self.recognize()####################################3
             if self.ifreach():
                 self.deleteTail()
                 while True:
@@ -46,11 +57,11 @@ class BHRecog(BlueZHexUnit,threading.Thread):
 
 if __name__=='__main__':
     Data= BHRecog()
+    Data.setWindowLength(150)
     Bluemodule=pourBluz()
     Read = threading.Thread(target=Data.lopcoupData, name='ReadTheData')
     Clim = threading.Thread(target=Data.lopClimb, name='ClimbTheData')
     Bluemodule.connect()#Connect to bluetooth module
-    Data.setWindowLength(150)
     Read.start()
     Clim.start()
     Read.join()
