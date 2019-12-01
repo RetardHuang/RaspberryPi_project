@@ -1,65 +1,69 @@
 import forBlueToothConnect as BTC
 import re
+from copy import deepcopy as cp
 class BlueZHexUnit:
     pattern = re.compile('.{2}')
-    HexList=list(['']*4)
-    ValueList=list(['']*4)
-    ucRxBuffer=list(['']*100)
-    FullHexList=list()
-    FullValueList=list()
+    HexList=list([list(['']*6)]*4)
+    ValueList=list([list([0]*3)]*4)
+    ucRxBuffer=list(['']*15)
+    FullValueList=[]
     def __init__(self):
         self.ucRxCnt = 0  # 0 at initial
         self.windowLength=150
     def setWindowLength(self,WindowLength):
         self.windowLength=WindowLength
+    def HexSinProcess(self,j,i):
+        Unsigned=(int((self.HexList[j][i+1]),16)<< 8) | (int(self.HexList[j][i],16))
+        if Unsigned < 0x8000:
+            return Unsigned
+        else:
+            return (Unsigned - 0x10000)
     def coupData(self,ReceivedHexString):
         HexPairs=self.pattern.findall(ReceivedHexString)#This two is use to split with interval two
+        initializeFlag=False
         for aPair in HexPairs:
             self.ucRxBuffer[self.ucRxCnt] = aPair
             self.ucRxCnt += 1  # 0 at initial
-            if self.ucRxBuffer[0]!='55':
+            if self.ucRxBuffer[0]!='55':#If the first received is 55
                 self.ucRxCnt = 0
                 continue
             if self.ucRxCnt < 11:
                 continue
             else:
                 if self.ucRxBuffer[1] == '51':
-                    self.HexList[0] = self.ucRxBuffer[2:8]
+                    self.HexList[0] = cp(self.ucRxBuffer[2:8])
                     smList=[]
                     for i in [0,2,4]:
-                        smList.append(((int((self.HexList[0][i+1]),16)<< 8) | (int(self.HexList[0][i],16))) / 32768 * 16 )
-                    self.ValueList[0]=smList
+                        smList.append(self.HexSinProcess(0,i)/32768* 16)
+                    self.ValueList[0]= cp(smList)
                 elif self.ucRxBuffer[1] == '52':
-                    self.HexList[1] = self.ucRxBuffer[2:8]
+                    self.HexList[1] = cp(self.ucRxBuffer[2:8])
                     smList=[]
                     for i in [0,2,4]:
-                        smList.append(((int((self.HexList[1][i+1]),16)<< 8) | (int(self.HexList[1][i],16))) / 32768 * 2000 )
-                    self.ValueList[1]=smList
+                        smList.append(self.HexSinProcess(1,i) / 32768 * 2000 )
+                    self.ValueList[1]= cp(smList)
                 elif self.ucRxBuffer[1] == '53':
-                    self.HexList[2] = self.ucRxBuffer[2:8]
+                    self.HexList[2] = cp(self.ucRxBuffer[2:8])
                     smList=[]
                     for i in [0,2,4]:
-                        smList.append(((int((self.HexList[2][i+1]),16)<< 8) | (int(self.HexList[2][i],16))) / 32768 * 180 )
-                    self.ValueList[2]=smList
+                        smList.append(self.HexSinProcess(2,i) / 32768 * 180 )
+                    self.ValueList[2]= cp(smList)
                 elif self.ucRxBuffer[1] == '54':
-                    self.HexList[3] = self.ucRxBuffer[2:8]
+                    self.HexList[3] = cp(self.ucRxBuffer[2:8])
                     smList=[]
                     for i in [0,2,4]:
-                        smList.append(((int((self.HexList[3][i+1]),16)<< 8) | (int(self.HexList[3][i],16))) )
-                    self.ValueList[3]=smList
-
-                    self.FullHexList.append(self.HexList)
-                    self.FullValueList.append(self.ValueList)
+                        smList.append(self.HexSinProcess(3,i) )
+                    self.ValueList[3]= cp(smList)
+                    self.FullValueList.append(cp(self.ValueList))
                 self.ucRxCnt =0
         self.windowFlag=True
     def TruOut(self):#This step can get 150 set of data.
         print('Having received',len(self.FullValueList),'sets of value.')
-        return self.FullValueList[0:self.windowLength]
+        return self.FullValueList[-self.windowLength:]
     def allclear(self):
-        self.HexList=list(['']*4)
-        self.ValueList=list(['']*4)
-        self.FullValueList=list()
-        self.FullHexList=list()
+        self.HexList=list([list(['']*6)]*4)
+        self.ValueList=list([list([0]*3)]*4)
+        self.FullValueList=[]
 
 
 if __name__=='__main__':
@@ -68,6 +72,5 @@ if __name__=='__main__':
     Data=BlueZHexUnit()
     while True:
         aLine=Jazz.naivesReceiveHex()
-        Data.split(aLine)
-        Data.coupData()
+        Data.coupData(aLine)
         print(Data.ValueList)

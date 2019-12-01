@@ -16,6 +16,7 @@ class BHRecog(BlueZHexUnit,Calculate):
         self.leftedge=0
         self.stepLength=1
         self.windowFlag=False
+        self.climbFlag=False
     def setWindowLength(self,WindowLength):
         BlueZHexUnit.setWindowLength(self,WindowLength)
         self.FullFeature=np.empty([self.windowLength,self.featurenumber])
@@ -38,7 +39,7 @@ class BHRecog(BlueZHexUnit,Calculate):
         print(self.TruOut())
     def lopClimb(self):#To Reconize the action
         while True:
-            self.recognize()####################################3
+            self.recognize()####################################
             if self.ifreach():
                 self.deleteTail()
                 while True:
@@ -46,22 +47,22 @@ class BHRecog(BlueZHexUnit,Calculate):
                         self.windowFlag=False
                         break
                     else:
-                        time.sleep(0.0001)
+                        time.sleep(0.01)
             self.windowFowards()
     def lopcoupData(self):#To get the data, which need to be assgined into another thread
         global Bluemodule
         while True:
-            self.coupData(Bluemodule.naivesReceiveHex())
             print('Rec!')
+            self.coupData(Bluemodule.naivesReceiveHex())
             self.windowFlag=True
 
 if __name__=='__main__':
     Data= BHRecog()
     Data.setWindowLength(150)
     Bluemodule=pourBluz()
+    Bluemodule.connect()#Connect to bluetooth module
     Read = threading.Thread(target=Data.lopcoupData, name='ReadTheData')
     Clim = threading.Thread(target=Data.lopClimb, name='ClimbTheData')
-    Bluemodule.connect()#Connect to bluetooth module
     Read.start()
     Clim.start()
     Read.join()

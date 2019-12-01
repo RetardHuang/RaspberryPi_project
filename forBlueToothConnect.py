@@ -36,13 +36,9 @@ class pourBluz:
                 receivedHex=receivedHex+aLine
     def receive_ArduinoTest(self):
         receivedData=bytes()
-        while True:
+        while ~(naivedata.find(self.bytesflag)+1):
             naivedata=self.sock.recv(1024)#contains\r\n at last
             receivedData=receivedData+naivedata
-            if naivedata.find(self.bytesflag)+1:
-                break
-            else:
-                continue
         return receivedData
     def received_string(self):
         return str(self.receive(),'utf-8')
