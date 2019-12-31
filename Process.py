@@ -1,23 +1,26 @@
 import numpy as np
 import time
+import traceback
 #from scipy.fftpack import fft,ifft
 #This is used to calculate each feature of the Data
 class Calculate:
     featurenumber=10
-    windowLength=150
-    def __init__(self,WindowLength):
+    windowLength=250
+    def __init__(self):
         self.Feature=np.empty(self.featurenumber)#uninitialized feature
-        self.windowLength=WindowLength
-        self.FullFeature=np.empty([self.windowLength,self.featurenumber])
+        self.FullFeature=np.zeros([self.windowLength,self.featurenumber])
     def proAWin(self,DataWithWindowLength):#What need to do after reveicing 3-second Data[AccXMean,,,AccXVar,,AccZVar,]
         npData=np.array(DataWithWindowLength)
         #npDaFr=fft(npData)
-        self.Feature[0]=np.mean(npData[:][0][0])#AccXMean
-        self.Feature[1]=np.mean(npData[:][0][1])#AccYMean
-        self.Feature[2]=np.mean(npData[:][0][2])#AccYMean
-        self.Feature[3]=np.mean(npData[:][1][0])#AccXMean
-        self.Feature[4]=np.mean(npData[:][1][1])#AccYMean
-        self.Feature[5]=np.mean(npData[:][1][2])#AccYMean
+        try:
+            self.Feature[0]=np.mean(npData[:][0][0])#AccXMean
+            self.Feature[1]=np.mean(npData[:][0][1])#AccYMean
+            self.Feature[2]=np.mean(npData[:][0][2])#AccYMean
+            self.Feature[3]=np.mean(npData[:][1][0])#AccXMean
+            self.Feature[4]=np.mean(npData[:][1][1])#AccYMean
+            self.Feature[5]=np.mean(npData[:][1][2])#AccYMean
+        except IndexError as e:
+            print('Having not received enough data')
         #...........
         #self.Feature[3]=np.var(npData[:][0][1])#AccXVar
         #...........

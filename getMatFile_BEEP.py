@@ -6,6 +6,7 @@ import numpy as np
 import scipy.io as io
 import ctypes
 player = ctypes.windll.kernel32
+
 if __name__=='__main__':
     Jazz=BTC.pourBluz()
     Jazz.connect()
@@ -14,16 +15,11 @@ if __name__=='__main__':
     for i in range(0,20):
         Jazz.naivesReceive()
         StartTime=time.time()
-        player.Beep(1000,1000)
         while EndTime-StartTime<2:
             aLine=Jazz.naivesReceiveHex()
             Data.coupData(aLine)
             print(Data.ValueList)
             EndTime=time.time()
-        player.Beep(1000,500)
-        time.sleep(0.05)
-        player.Beep(1000,500)
-        time.sleep(0.05)
         print('Shit')
         print(len(Data.FullValueList))
         io.savemat('Signal/test_'+str(i)+'.mat',{'data': Data.FullValueList[-600:]})

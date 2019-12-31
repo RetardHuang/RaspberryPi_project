@@ -9,9 +9,6 @@ class BlueZHexUnit:
     FullValueList=[]
     def __init__(self):
         self.ucRxCnt = 0  # 0 at initial
-        self.windowLength=150
-    def setWindowLength(self,WindowLength):
-        self.windowLength=WindowLength
     def HexSinProcess(self,j,i):
         Unsigned=(int((self.HexList[j][i+1]),16)<< 8) | (int(self.HexList[j][i],16))
         if Unsigned < 0x8000:
@@ -20,7 +17,6 @@ class BlueZHexUnit:
             return (Unsigned - 0x10000)
     def coupData(self,ReceivedHexString):
         HexPairs=self.pattern.findall(ReceivedHexString)#This two is use to split with interval two
-        initializeFlag=False
         for aPair in HexPairs:
             self.ucRxBuffer[self.ucRxCnt] = aPair
             self.ucRxCnt += 1  # 0 at initial
@@ -57,9 +53,6 @@ class BlueZHexUnit:
                     self.FullValueList.append(cp(self.ValueList))
                 self.ucRxCnt =0
         self.windowFlag=True
-    def TruOut(self):#This step can get 150 set of data.
-        print('Having received',len(self.FullValueList),'sets of value.')
-        return self.FullValueList[-self.windowLength:]
     def allclear(self):
         self.HexList=list([list(['']*6)]*4)
         self.ValueList=list([list([0]*3)]*4)

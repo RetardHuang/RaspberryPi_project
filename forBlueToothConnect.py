@@ -13,12 +13,17 @@ class pourBluz:
     def BytesFlagChange(self,NewFlag):
         self.bytesflag=bytes(NewFlag,encoding='utf-8')
     def connect(self):
-        self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        self.sock.connect((self.bd_addr, self.port))
+        while True:
+            try:
+                self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+                self.sock.connect((self.bd_addr, self.port))
+                break
+            except OSError:
+                print('Connection failed, try again...')
     def naivesReceiveString(self):
         return self.sock.recv(1024).decode('utf-8','ignore')
     def naivesReceive(self):
-        return self.sock.recv(1024)
+        return self.sock.recv(65536)
     def naivesReceiveHex(self):
         return self.sock.recv(1024).hex()#The type of return value is STR
     def Hex55kai(self):
