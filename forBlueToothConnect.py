@@ -3,15 +3,12 @@ import bluetooth
 class pourBluz:
     bd_addr = "98:D3:21:FC:82:A8"
     port = 1
-    bytesflag = bytes('\r\n',encoding='utf-8')
     def __init__(self):
         pass
     def BluetoothAddressChange(self,BluetoothAddress):
         self.bd_addr=BluetoothAddress
     def BluetoothPortChange(self,port):
         self.port=port
-    def BytesFlagChange(self,NewFlag):
-        self.bytesflag=bytes(NewFlag,encoding='utf-8')
     def connect(self):
         while True:
             try:
@@ -35,16 +32,9 @@ class pourBluz:
                 print(receivedHex)
                 print(count)
                 count+=1
-                #print(len(receivedHex))
                 receivedHex=aLine
             else:
                 receivedHex=receivedHex+aLine
-    def receive_ArduinoTest(self):
-        receivedData=bytes()
-        while ~(naivedata.find(self.bytesflag)+1):
-            naivedata=self.sock.recv(1024)#contains\r\n at last
-            receivedData=receivedData+naivedata
-        return receivedData
     def received_string(self):
         return str(self.receive(),'utf-8')
     def close(self):
