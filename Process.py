@@ -1,11 +1,13 @@
 import numpy as np
 import time
+import joblib
 import traceback
 #from scipy.fftpack import fft,ifft
 #This is used to calculate each feature of the Data
 class Calculate:
-    featurenumber=10
-    windowLength=250
+    featurenumber=6
+    windowLength=400
+    Labelstate=0
     def __init__(self):
         self.Feature=np.empty(self.featurenumber)#uninitialized feature
         self.FullFeature=np.zeros([self.windowLength,self.featurenumber])
@@ -15,17 +17,18 @@ class Calculate:
         try:
             self.Feature[0]=np.mean(npData[:][0][0])#AccXMean
             self.Feature[1]=np.mean(npData[:][0][1])#AccYMean
-            self.Feature[2]=np.mean(npData[:][0][2])#AccYMean
-            self.Feature[3]=np.mean(npData[:][1][0])#AccXMean
-            self.Feature[4]=np.mean(npData[:][1][1])#AccYMean
-            self.Feature[5]=np.mean(npData[:][1][2])#AccYMean
-        except IndexError as e:
+            self.Feature[2]=np.mean(npData[:][0][2])#AccZMean
+            self.Feature[3]=np.mean(npData[:][1][0])#GXMean
+            self.Feature[4]=np.mean(npData[:][1][1])#GYMean
+            self.Feature[5]=np.mean(npData[:][1][2])#GZMean
+        except IndexError:
             print('Having not received enough data')
-        #...........
-        #self.Feature[3]=np.var(npData[:][0][1])#AccXVar
-        #...........
-        print(DataWithWindowLength)
-        #return Feature
+        print(self.Feature)
+    def loadModel(self):#Load the joblib model
+        self.model=joblib.load('rtcs.model')
+    def featureRecognize(self):#Start recognize by machine learning
+        self.Labelstate=self.model.predict(self.Feature.reshape(1,-1))
+        pass
     def putin(self,WhereInAll):
         self.FullFeature[WhereInAll]=self.Feature
     def SavewithLabel(self,LabelOfTheTest):

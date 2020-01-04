@@ -15,7 +15,6 @@ class BHRecog(BlueZHexUnit,Calculate):
         Calculate.__init__(self)
         self.leftedge=0
         self.stepLength=3
-        self.climbFlag=False
     ######################################
     def recognize(self):#DetectwindowData!
         print('Data pool is full, start a recognition')
@@ -38,7 +37,7 @@ class BHRecog(BlueZHexUnit,Calculate):
 
 if __name__=='__main__':
     Data= BHRecog()
-    Data.setWindowLength(600)
+    Data.setWindowLength(400)
     Bluemodule=pourBluz()
     Bluemodule.connect()#Connect to bluetooth module
     Read = threading.Thread(target=Data.lopcoupData, name='ReadTheData')
