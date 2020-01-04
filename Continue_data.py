@@ -18,9 +18,8 @@ class BHRecog(BlueZHexUnit,Calculate):
         self.climbFlag=False
     ######################################
     def recognize(self):#DetectwindowData!
-        print('Recog!')
+        print('Data pool is full, start a recognition')
         self.proAWin(self.FullValueList[0:self.windowLength])
-        pass
     ######################################
     def setWindowLength(self,wlength):
         self.windowLength=wlength
@@ -29,13 +28,13 @@ class BHRecog(BlueZHexUnit,Calculate):
             if len(self.FullValueList) > self.windowLength:
                 del self.FullValueList[0:self.stepLength]
                 print('windowLength is',self.windowLength)
-                print('Length is',len(self.FullValueList))
+                print('Pool length is',len(self.FullValueList))
                 self.recognize()####################################
     def lopcoupData(self):#To get the data, which need to be assgined into another thread
         global Bluemodule
         while True:
-            print('Rec!')
-            self.coupData(Bluemodule.naivesReceiveHex())
+            print('Receiving a new data train')
+            self.coupDaa(Bluemodule.naivesReceiveHex())
 
 if __name__=='__main__':
     Data= BHRecog()

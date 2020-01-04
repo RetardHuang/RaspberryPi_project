@@ -52,7 +52,6 @@ class BlueZHexUnit:
                     self.ValueList[3]= cp(smList)
                     self.FullValueList.append(cp(self.ValueList))
                 self.ucRxCnt =0
-        self.windowFlag=True
     def allclear(self):
         self.HexList=list([list(['']*6)]*4)
         self.ValueList=list([list([0]*3)]*4)
