@@ -26,4 +26,4 @@ if __name__=='__main__':
         Data.allclear()
         time.sleep(3)
 
-    Jazz.close()#shit!
+    Jazz.close()

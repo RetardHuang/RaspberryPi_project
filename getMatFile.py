@@ -27,6 +27,6 @@ if __name__=='__main__':
         print(len(Data.FullValueList))
         io.savemat('Signal/test_'+str(i)+'.mat',{'data': Data.FullValueList[-600:]})
         Data.allclear()
-        time.sleep(3)
+        time.sleep(3)#shit
 
     Jazz.close()#huangyifan
