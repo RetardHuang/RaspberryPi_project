@@ -24,7 +24,6 @@ if __name__=='__main__':
         time.sleep(0.05)
         player.Beep(1000,500)
         time.sleep(0.05)
-        print('Shit')
         print(len(Data.FullValueList))
         io.savemat('Signal/test_'+str(i)+'.mat',{'data': Data.FullValueList[-600:]})
         Data.allclear()
