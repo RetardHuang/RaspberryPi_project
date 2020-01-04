@@ -34,7 +34,7 @@ class BHRecog(BlueZHexUnit,Calculate):
         global Bluemodule
         while True:
             print('Receiving a new data train')
-            self.coupDaa(Bluemodule.naivesReceiveHex())
+            self.coupData(Bluemodule.naivesReceiveHex())
 
 if __name__=='__main__':
     Data= BHRecog()
