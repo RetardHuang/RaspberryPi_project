@@ -14,22 +14,20 @@ class Calculate:
     def proAWin(self,DataWithWindowLength):#What need to do after reveicing 3-second Data[AccXMean,,,AccXVar,,AccZVar,]
         npData=np.array(DataWithWindowLength)
         try:
-            self.Feature[0]=    np.mean(npData[:][0][0])#AccXMean
-            self.Feature[1]=    np.mean(npData[:][0][1])#AccYMean
-            self.Feature[2]=    np.mean(npData[:][0][2])#AccZMean
-            self.Feature[3]=    np.var(npData[:][0][0])
-            self.Feature[4]=    np.var(npData[:][0][1])
-            self.Feature[5]=    np.var(npData[:][0][2])
-            self.Feature[6]=    np.ptp(npData[:][0][0])
-            self.Feature[7]=    np.ptp(npData[:][0][1])
-            self.Feature[8]=    np.ptp(npData[:][0][2])
-            self.Feature[9]=    skew(npData[:][0][0])
-            self.Feature[10]=   skew(npData[:][0][1])
-            self.Feature[11]=   skew(npData[:][0][2])
-            print('Calculation success')
+            self.Feature[0]=    np.mean(npData[:,0,0])#AccXMean
+            self.Feature[1]=    np.mean(npData[:,0,1])#AccYMean
+            self.Feature[2]=    np.mean(npData[:,0,2])#AccZMean
+            self.Feature[3]=    np.var(npData[:,0,0])
+            self.Feature[4]=    np.var(npData[:,0,1])
+            self.Feature[5]=    np.var(npData[:,0,2])
+            self.Feature[6]=    np.ptp(npData[:,0,0])
+            self.Feature[7]=    np.ptp(npData[:,0,1])
+            self.Feature[8]=    np.ptp(npData[:,0,2])
+            self.Feature[9]=    skew(npData[:,0,0])
+            self.Feature[10]=   skew(npData[:,0,1])
+            self.Feature[11]=   skew(npData[:,0,2])
         except IndexError:
             print('Having not received enough data')
-        print(self.Feature)
     def loadModel(self):#Load the joblib model
         self.model=joblib.load('rtcs.model')
     def featureRecognize(self):#Start recognize by machine learning

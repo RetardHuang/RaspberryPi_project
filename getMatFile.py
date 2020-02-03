@@ -10,7 +10,7 @@ if __name__=='__main__':
     Jazz.connect()
     Data=HexProcessing.BlueZHexUnit()
     EndTime=0
-    for i in range(0,10):
+    for i in range(0,40):
         Jazz.naivesReceive()
         StartTime=time.time()
         player.Beep(1000,1000)
@@ -26,6 +26,6 @@ if __name__=='__main__':
         print(len(Data.FullValueList))
         io.savemat('Signal/test_'+str(i)+'.mat',{'data': Data.FullValueList[-600:]})
         Data.allclear()
-        time.sleep(4)#shit
+        time.sleep(1.5)#shit
 
     Jazz.close()#huangyifan
