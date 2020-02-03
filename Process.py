@@ -26,6 +26,7 @@ class Calculate:
             self.Feature[9]=    skew(npData[:][0][0])
             self.Feature[10]=   skew(npData[:][0][1])
             self.Feature[11]=   skew(npData[:][0][2])
+            print('Calculation success')
         except IndexError:
             print('Having not received enough data')
         print(self.Feature)

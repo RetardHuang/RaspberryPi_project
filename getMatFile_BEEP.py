@@ -1,11 +1,7 @@
 import HexProcessing
 import forBlueToothConnect as BTC
-import re
 import time
-import numpy as np
 import scipy.io as io
-import ctypes
-player = ctypes.windll.kernel32
 
 if __name__=='__main__':
     Jazz=BTC.pourBluz()
