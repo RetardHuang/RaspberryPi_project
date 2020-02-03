@@ -5,13 +5,14 @@ import time
 import numpy as np
 import scipy.io as io
 import ctypes
+time.sleep(3)
 player = ctypes.windll.kernel32
 if __name__=='__main__':
     Jazz=BTC.pourBluz()
     Jazz.connect()
     Data=HexProcessing.BlueZHexUnit()
     EndTime=0
-    for i in range(0,20):
+    for i in range(0,10):
         Jazz.naivesReceive()
         StartTime=time.time()
         player.Beep(1000,1000)
@@ -27,6 +28,6 @@ if __name__=='__main__':
         print(len(Data.FullValueList))
         io.savemat('Signal/test_'+str(i)+'.mat',{'data': Data.FullValueList[-600:]})
         Data.allclear()
-        time.sleep(3)#shit
+        time.sleep(4)#shit
 
     Jazz.close()#huangyifan

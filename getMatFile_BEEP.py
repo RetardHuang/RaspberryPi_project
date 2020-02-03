@@ -12,7 +12,7 @@ if __name__=='__main__':
     Jazz.connect()
     Data=HexProcessing.BlueZHexUnit()
     EndTime=0
-    for i in range(0,20):
+    for i in range(0,5):
         Jazz.naivesReceive()
         StartTime=time.time()
         while EndTime-StartTime<2:
