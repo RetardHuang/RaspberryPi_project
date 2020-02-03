@@ -24,7 +24,7 @@ class BHRecog(BlueZHexUnit,Calculate):
         self.windowLength=wlength
     def lopClimb(self):#To Reconize the action
         while True:
-            if len(self.FullValueList) > self.windowLength:
+            if len(self.FullValueList) > (self.windowLength+self.stepLength):
                 del self.FullValueList[0:self.stepLength]
                 print('windowLength is',self.windowLength)
                 print('Pool length is',len(self.FullValueList))
