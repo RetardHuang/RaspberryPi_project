@@ -29,6 +29,7 @@ class BHRecog(BlueZHexUnit,Calculate):
                 print('windowLength is',self.windowLength)
                 print('Pool length is',len(self.FullValueList))
                 self.recognize()####################################
+                print(self.Feature)## TO PRINT THE FEATURE##
     def lopcoupData(self):#To get the data, which need to be assgined into another thread
         global Bluemodule
         while True:
