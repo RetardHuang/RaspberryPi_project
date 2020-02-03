@@ -1,7 +1,6 @@
 #This Program is aimed to collect data with of JY901 of 3 seconds.
 from HexProcessing import BlueZHexUnit
 from forBlueToothConnect import pourBluz
-import time
 import threading
 
 from Process import Calculate

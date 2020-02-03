@@ -1,8 +1,6 @@
 import HexProcessing
 import forBlueToothConnect as BTC
-import re
 import time
-import numpy as np
 import scipy.io as io
 import ctypes
 time.sleep(3)
